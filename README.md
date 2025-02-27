@@ -8,9 +8,37 @@ This repository contains the source code, electronic schematics, and 3D models u
 
 A journal tracking the development of this project can be found in this [imgur post](https://imgur.com/a/led-load-display-pLlge7e).
 
+## bill of materials
+
+Tools:
+- 3D printer ([Bambu Lab P1S](https://us.store.bambulab.com/products/p1s))
+- Soldering iron ([Weller WE1010](https://www.weller-tools.com/we1010na/))
+- Breadboard ([Jameco Valuepro 830](https://www.jameco.com/z/WBU-202-R-Jameco-ValuePro-830-Point-Solderless-Breadboard-6-5-x-2-125-with-Adhesive-Backing-and-Metal-Baseplate_20723.html)) (optional)
+- Oscilloscope ([Siglent SDS814X HD](https://siglentna.com/product/sds814x-hd/)) (optional)
+
+Materials:
+- [Bambu Lab matte charcoal PLA-HF (11101)](https://us.store.bambulab.com/products/pla-matte)
+- [superglue](https://www.amazon.com/dp/B08QQZ71CV)
+- [solder](https://www.amazon.com/dp/B09LDHLM1F)
+- [24 AWG hook-up wire](https://www.amazon.com/dp/B076P54QW8)
+- [wires with female-female Dupont connectors](https://www.amazon.com/dp/B01EV70C78)
+- [perf board](https://www.amazon.com/dp/B07ZYTZ48N)
+- [8x8 LED modules with MAX7219 microcontrollers](https://www.amazon.com/dp/B0BXDJS22V)
+- [two 74HC14 inverter ICs](https://www.amazon.com/dp/B0983ZXJFZ)
+- [Raspberry Pi 4B](https://www.amazon.com/Raspberry-Pi-RPI4-MODBP-4GB-Model-4GB/dp/B09TTNF8BT)
+- [Raspberry Pi 15W USB-C power supply](https://www.amazon.com/Raspberry-Pi-USB-C-Power-Supply/dp/B07W8XHMJZ)
+- [two 40mm x 20mm 5V fans](https://www.amazon.com/dp/B072Q3CMRW)
+- [USB-C panel mount extension cable](https://www.datapro.net/products/usb-c-panel-mount-extension-cable.html?search=usb-c+panel)
+- [RJ45 Ethernet panel mount extension cable](https://www.datapro.net/products/panel-mount-ethernet-rj45-cat5e-extension-cable.html?search=rj45+panel)
+- [Rack ears](https://www.amazon.com/dp/B0B6TM1LC1)
+- [M3 socket head screws and nuts](https://www.amazon.com/dp/B0CXX8K2WT)
+- [M4 button head screws](https://www.amazon.com/dp/B0CTH4DWW2) and [nuts](https://www.amazon.com/dp/B0CNSY7637)
+
 ## models
 
 The [models](https://github.com/glhughes123/ledload/tree/main/models) directory contains all of the designs and models for the enclosure parts and LED alinment jig.
+
+All of these parts were printed with default slicer settings using Bambu Lab matte black PLA-HF unless otherwise specified in the notes below.
 
 ### FreeCAD projects
 
