@@ -3,6 +3,7 @@
 #include <string.h>
 #include <time.h>
 #include "CpuLoad.hpp"
+#include "digits.h"
 #include "Display.hpp"
 #include "gpio.h"
 #include "util.h"
@@ -29,12 +30,19 @@ enum display_kind
     dk_led
 };
 
+void display_test_random(CpuLoadReader *preader, RemoteCpuLoadWriter *pwriter, Display *pdisplay, int delay);
+void display_test_ants(CpuLoadReader *preader, RemoteCpuLoadWriter *pwriter, Display *pdisplay, int delay);
+void display_test_digits(CpuLoadReader *preader, RemoteCpuLoadWriter *pwriter, Display *pdisplay, int delay);
+
+void display_load(CpuLoadReader *preader, RemoteCpuLoadWriter *pwriter, Display *pdisplay, int delay);
+
 int main(int argc, char **argv)
 {
     bool local = true;
     display_kind dk_display = dk_console;
     char *pszserver = NULL;
     int port = DEFAULT_PORT;
+    void (*pfn_display)(CpuLoadReader *preader, RemoteCpuLoadWriter *pwriter, Display *pdisplay, int delay) = display_load;
     for (int i = 1; i < argc; i++)
     {
         if (strcmp("-s", argv[i]) == 0)
@@ -70,25 +78,42 @@ int main(int argc, char **argv)
             continue;
         }
 
+        if (strcmp("-tr", argv[i]) == 0)
+        {
+            pfn_display = display_test_random;
+            continue;
+        }
+
+        if (strcmp("-ta", argv[i]) == 0)
+        {
+            pfn_display = display_test_ants;
+            continue;
+        }
+
+        if (strcmp("-td", argv[i]) == 0)
+        {
+            pfn_display = display_test_digits;
+            continue;
+        }
+
         return -1;
     }
 
-    int delay = 0;
+    int delay = UPDATE_DELAY_US;
     CpuLoadReader *preader = NULL;
     if (local)
     {
-        delay = UPDATE_DELAY_US;
         preader = new LocalCpuLoadReader();
     }
     else
     {
+        delay = 0; // NOTE: timing driven off of remote end
         preader = new RemoteCpuLoadReader(port);
     }
 
     RemoteCpuLoadWriter *pwriter = NULL;
     if (pszserver != NULL)
     {
-        delay = UPDATE_DELAY_US;
         pwriter = new RemoteCpuLoadWriter(pszserver, port);
     }
 
@@ -108,6 +133,66 @@ int main(int argc, char **argv)
 
     srand(time(NULL));
 
+    (*pfn_display)(preader, pwriter, pdisplay, delay);
+
+    delete preader;
+    delete pwriter;
+    delete pdisplay;
+
+    return 0;
+}
+
+void display_test_random(CpuLoadReader *preader, RemoteCpuLoadWriter *pwriter, Display *pdisplay, int delay)
+{
+    srand(0); // NOTE: for stable sequence
+    while (true)
+    {
+        for (int y = 0; y < pdisplay->height; y++)
+        {
+            for (int x = 0; x < pdisplay->width; x++)
+            {
+                pdisplay->pbuffer[y * pdisplay->width + x] = rand() % 2;
+            }
+        }
+        pdisplay->WriteBuffer();
+    }
+}
+
+void display_test_ants(CpuLoadReader *preader, RemoteCpuLoadWriter *pwriter, Display *pdisplay, int delay)
+{
+    while (true)
+    {
+        time_t t = time(NULL);
+        for (int y = 0; y < pdisplay->height; y++)
+        {
+            for (int x = 0; x < pdisplay->width; x++)
+            {
+                pdisplay->pbuffer[y * pdisplay->width + x] = (t + y + x) % 2;
+            }
+        }
+        pdisplay->WriteBuffer();
+    }
+}
+
+void display_test_digits(CpuLoadReader *preader, RemoteCpuLoadWriter *pwriter, Display *pdisplay, int delay)
+{
+    while (true)
+    {
+        time_t t = time(NULL);
+        for (int y = 0; y < pdisplay->height; y++)
+        {
+            for (int x = 0; x < pdisplay->width; x++)
+            {
+                int s = x / DIGIT_WIDTH;
+                pdisplay->pbuffer[y * pdisplay->width + x] = (digits[(s + t) % 16][y % DIGIT_HEIGHT][x % DIGIT_WIDTH] == '*');
+            }
+        }
+        pdisplay->WriteBuffer();
+    }
+}
+
+void display_load(CpuLoadReader *preader, RemoteCpuLoadWriter *pwriter, Display *pdisplay, int delay)
+{
     int lupd[NUM_CPUS];
     int dcpu[NUM_CPUS];
     int cpus0[NUM_CPUS];
@@ -220,10 +305,4 @@ int main(int argc, char **argv)
 
         microsleep(delay);
     }
-
-    delete preader;
-    delete pwriter;
-    delete pdisplay;
-
-    return 0;
 }

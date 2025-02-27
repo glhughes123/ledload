@@ -10,8 +10,6 @@
 #include <unistd.h>
 #include "CpuLoad.hpp"
 
-#define PACKET_HEADER_BYTES 5
-
 RemoteCpuLoadReader::RemoteCpuLoadReader(int port)
 {
     this->fdsock = socket(AF_INET, SOCK_DGRAM, 0);

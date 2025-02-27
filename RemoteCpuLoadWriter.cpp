@@ -12,8 +12,6 @@
 #include <unistd.h>
 #include "CpuLoad.hpp"
 
-#define PACKET_HEADER_BYTES 5
-
 #define GET_BYTE(x, n) (((size_t)(x) >> (n * 8)) & 0xFF)
 
 RemoteCpuLoadWriter::RemoteCpuLoadWriter(const char *pszaddr, int port)

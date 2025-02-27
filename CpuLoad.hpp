@@ -1,6 +1,8 @@
 #include <arpa/inet.h>
 #include <time.h>
 
+#define PACKET_HEADER_BYTES 5
+
 class CpuLoad
 {
 public:
