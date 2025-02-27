@@ -21,28 +21,28 @@ The [models](https://github.com/glhughes123/ledload/tree/main/models) directory 
 
 ### 3MF files
 
-| File | Description |
-| ---- | ----------- |
-| [led alignment plate-6 leds w_ notches and edge.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20alignment%20plate-6%20leds%20w_%20notches%20and%20edge.3mf) | 6-module half of the LED alignment jig |
-| [led alignment plate-7 leds w_ notches and edge.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20alignment%20plate-7%20leds%20w_%20notches%20and%20edge.3mf) | 7-module half of the LED alignment jig |
+| File | Description | Printing notes |
+| ---- | ----------- | -------------- |
+| [led alignment plate-6 leds w_ notches and edge.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20alignment%20plate-6%20leds%20w_%20notches%20and%20edge.3mf) | 6-module half of the LED alignment jig | Print flat side down with support (for socket recesses) |
+| [led alignment plate-7 leds w_ notches and edge.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20alignment%20plate-7%20leds%20w_%20notches%20and%20edge.3mf) | 7-module half of the LED alignment jig | Print flat side down with support (for socket recesses) |
 
-| File | Description |
-| ---- | ----------- |
-| [led rack mount-panel 001 bottom with pins.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20rack%20mount-panel%20001%20bottom%20with%20pins.3mf) | Bottom-right panel |
-| [led rack mount-panel 001 top with pins.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20rack%20mount-panel%20001%20top%20with%20pins.3mf) | Top-left panel |
-| [led rack mount-panel 002 bottom with pins.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20rack%20mount-panel%20002%20bottom%20with%20pins.3mf) | Bottom-left panel |
-| [led rack mount-panel 002 top with pins.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20rack%20mount-panel%20002%20top%20with%20pins.3mf) | Top-right panel |
-| [led rack mount-backplate with ethernet.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20rack%20mount-backplate%20with%20ethernet.3mf) | Rear-left panel with cutouts for USB-C and RJ45 Ethernet |
-| [led rack mount-backplate with fans.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20rack%20mount-backplate%20with%20fans.3mf) | Rear-right panel with cutouts for two 40mm fans |
-| [led rack mount-backplate joiner.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20rack%20mount-backplate%20joiner.3mf) | Plate to join the rear panel halves together |
-| [led rack mount-front with bezel.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20rack%20mount-front%20with%20bezel.3mf) | Half of the front panel with cutout for the LED modules |
-| [led rack mount-dowel.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20rack%20mount-dowel.3mf) | Dowel to join the front bezel halves together |
-| [led rack mount-side.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20rack%20mount-side.3mf) | Side panel |
-| [led rack mount-squared peg.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20rack%20mount-squared%20peg.3mf) | Internal support peg |
-| [led rack mount-front center tab.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20rack%20mount-front%20center%20tab.3mf) | Tab to keep pressure on LED alignment jig against front bezel |
-| [led rack mount-rpi4 mount.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20rack%20mount-rpi4%20mount.3mf) | Platform to mount RPI 4 onto bottom panel grid |
-| [led rack mount-perfboard mount.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20rack%20mount-perfboard%20mount.3mf) | Platform to mount perfboard onto bottom of panel grid |
-| [led rack mount-clip.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20rack%20mount-clip.3mf) | Clip to mount circuit boards to platforms |
+| File | Description | Printing notes |
+| ---- | ----------- | -------------- |
+| [led rack mount-panel 001 bottom with pins.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20rack%20mount-panel%20001%20bottom%20with%20pins.3mf) | Bottom-right panel | Print external face down with support (for screw holes) |
+| [led rack mount-panel 001 top with pins.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20rack%20mount-panel%20001%20top%20with%20pins.3mf) | Top-left panel | Print external face down with support (for screw holes) |
+| [led rack mount-panel 002 bottom with pins.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20rack%20mount-panel%20002%20bottom%20with%20pins.3mf) | Bottom-left panel | Print external face down with support (for screw holes) |
+| [led rack mount-panel 002 top with pins.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20rack%20mount-panel%20002%20top%20with%20pins.3mf) | Top-right panel | Print external face down with support (for screw holes) |
+| [led rack mount-backplate with ethernet.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20rack%20mount-backplate%20with%20ethernet.3mf) | Rear-left panel with cutouts for USB-C and RJ45 Ethernet | Print external face down without supports; requires some trimming of screw holes |
+| [led rack mount-backplate with fans.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20rack%20mount-backplate%20with%20fans.3mf) | Rear-right panel with cutouts for two 40mm fans | Print external face down without supports; requires some trimming of screw holes |
+| [led rack mount-backplate joiner.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20rack%20mount-backplate%20joiner.3mf) | Plate to join the rear panel halves together | |
+| [led rack mount-front with bezel.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20rack%20mount-front%20with%20bezel.3mf) | Half of the front panel with cutout for the LED modules | Print external face down without supports; requires some trimming of screw holes |
+| [led rack mount-dowel.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20rack%20mount-dowel.3mf) | Dowel to join the front bezel halves together | |
+| [led rack mount-side.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20rack%20mount-side.3mf) | Side panel | Print external face down without supports |
+| [led rack mount-squared peg.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20rack%20mount-squared%20peg.3mf) | Internal support peg | Print on side without supports, with slots oriented vertically |
+| [led rack mount-front center tab.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20rack%20mount-front%20center%20tab.3mf) | Tab to keep pressure on LED alignment jig against front bezel | |
+| [led rack mount-rpi4 mount.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20rack%20mount-rpi4%20mount.3mf) | Platform to mount RPI 4 onto bottom panel grid | |
+| [led rack mount-perfboard mount.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20rack%20mount-perfboard%20mount.3mf) | Platform to mount perfboard onto bottom of panel grid | |
+| [led rack mount-clip.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20rack%20mount-clip.3mf) | Clip to mount circuit boards to platforms | |
 
 ## building the LED alignment jig
 
