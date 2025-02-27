@@ -119,8 +119,8 @@ Required parts:
 
 Instructions:
 1. Place the alignment jig with the attached LED modules into the front bezel.
-2. Insert M3 screws into the slots in the side panels for the front screw holes.
-3. Attach the front bezel with the alignment jig to the front of the box. Make sure the rings at the bottom of the bezel align with the pins in the bottom panels.
+2. Insert M3 nuts into the slots in the side panels for the front screw holes.
+3. Slide the front bezel with the alignment jig into the front of the box from the top. Align the sides of the bezel with the sides of the box and slide down. There are tabs on the sides of the box and the center of the bottom panel that should go behind the alignment jig (between the back of the jig and the front of the circuit boards) to keep it in place. Make sure the rings at the bottom of the bezel align with the pins in the bottom panel.
 4. Screw the front bezel in place.
 5. Attach the RPI to its mounting plate using either screws or the clips. Attach the RPI mounting plate to the bottom-right panel by aligning the fingers on the bottom of the mounting plate to the grid in the panel. Push down to lock in place.
 6. Attach the buffer circuit perf board to its mounting plate and the bottom panel of the case in a similar fashion.
