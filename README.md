@@ -35,6 +35,7 @@ Materials:
 - [Rack ears](https://www.amazon.com/dp/B0B6TM1LC1)
 - [M3 socket head screws and nuts](https://www.amazon.com/dp/B0CXX8K2WT)
 - [M4 button head screws](https://www.amazon.com/dp/B0CTH4DWW2) and [nuts](https://www.amazon.com/dp/B0CNSY7637)
+- [light dimming sheets](https://www.amazon.com/dp/B006R0VWSG)
 
 ## models
 
@@ -146,6 +147,7 @@ Required parts:
 - M3 nuts
 - Rasbperry Pi 4B
 - Wires with female Dupont connectors on both ends
+- [light dimming sheets](https://www.amazon.com/dp/B006R0VWSG) (optional)
 
 Instructions:
 1. Place the alignment jig with the attached LED modules into the front bezel.
@@ -172,6 +174,8 @@ Instructions:
    - GND pin 9 to pin 1 of the fan cable
 10. Plug in the USB-C and RJ45 Ethernet cables.
 11. Place M3 nuts in the slots for the top holes in the side panels and the pegs in the middle of the case. Use superglue to secure them in place as there will otherwise be nothing preventing them from turning when screwing the top panel in place.
+12. Optionally, cut light dimming sheets to size and apply to front.
+    - These sheets stick to the LED panels via static cling and are very easy to dislodge, e.g. when assembling or cleaning. I am probably going to replace it with some kind of [light dimming tape](https://www.amazon.com/dp/B0CDH9Y5J4) in the future.
 
 ## testing
 
