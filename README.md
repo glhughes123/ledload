@@ -124,35 +124,44 @@ Instructions:
 4. Screw the front bezel in place.
 5. Attach the RPI to its mounting plate using either screws or the clips. Attach the RPI mounting plate to the bottom-right panel by aligning the fingers on the bottom of the mounting plate to the grid in the panel. Push down to lock in place.
 6. Attach the buffer circuit perf board to its mounting plate and the bottom panel of the case in a similar fashion.
-7. Attach wires from the output headers of the buffer circuit to the input headers on the strings of LED modules
-- CS0 to the left-most string
-- CS1 to the middle string
-- CS2 to the right-most string
+7. Attach wires from the output headers of the buffer circuit to the input headers on the strings of LED modules:
+   - CS0 to the left-most string
+   - CS1 to the middle string
+   - CS2 to the right-most string
 8. Attach wires from the GPIO pins of the RPI to the input headers of the buffer circuit:
-- 5V pin 4 to PWR
-- GND pin 6 to GND
-- GPIO pin 25 (pin 22) to CS0
-- GPIO pin 24 (pin 18) to CS1
-- GPIO pin 23 (pin 16) to CS2
-- MOSI (pin 19) to DATA
-- CLK (pin 13) to CLK
-9. Attach wires from the GPIO pins of the RPI to the fans
-- Use a fan splitter
-- 5V pin 2 to pin 2 of the fan cable (male Dupont connectors fit perfectly)
-- GND pin 9 to pin 1 of the fan cable
-10. Plug in the USB-C and RJ45 Ethernet cables
+   - 5V pin 4 to PWR
+   - GND pin 6 to GND
+   - GPIO pin 25 (pin 22) to CS0
+   - GPIO pin 24 (pin 18) to CS1
+   - GPIO pin 23 (pin 16) to CS2
+   - MOSI (pin 19) to DATA
+   - CLK (pin 13) to CLK
+9. Attach wires from the GPIO pins of the RPI to the fans:
+   - Use a fan splitter
+   - 5V pin 2 to pin 2 of the fan cable (male Dupont connectors fit perfectly)
+   - GND pin 9 to pin 1 of the fan cable
+10. Plug in the USB-C and RJ45 Ethernet cables.
 11. Place M3 nuts in the slots for the top holes in the side panels and the pegs in the middle of the case. Use superglue to secure them in place as there will otherwise be nothing preventing them from turning when screwing the top panel in place.
 
 ## testing
 
-1. Put an SD card in the RPI with whatever Linux-based OS you want to use
-2. Plug in the power and let it boot up
-3. Build / install the ledload program on the RPI
-4. Build / install the ledload program on the client machine whose status you wish to monitor (can also be the same RPI)
-5. Run ```ledload -s -l``` on the RPI to start it in LED mode
-6. Run ```ledload -c 192.168.0.100``` on the client machine where ```192.168.0.100``` is replaced with the IP of the RPI (must be the IP address)
+1. Put an SD card in the RPI with whatever Linux-based OS you want to use.
+2. Plug in the power and let it boot up.
+3. Build / install ```ledload``` on the RPI.
+4. ```ledload``` has test cases you can use to verify the LED panel is working properly:
+   - ```ledload -l -td``` is a moving set of hex digits to verify LED segment addressing
+   - ```ledload -l -ta``` is a moving ants pattern to verify LED dot addressability
+   - ```ledload -l -tr``` is a random pattern to verify data / clock signal integrity
+   - ```ledload -l``` will display local load on the LED panel
+   - All test cases (```-t*```) will refresh the display at a high rate (> 100Hz on my RPI) even with slow pattern changes (digits, ants)
 
-If all is working well, at this point you should see the LED displays light up and start showing you some load information. Note that the ledload program is built for my 56-core Xeon so you will not see the entire display lit up if you have fewer cores. It's left as an exercise to the reader to modify the program to meet your specific needs.
+If everything is working well at this point you can set up the client to send load information to the server:
+
+5. Build / install ```ledload``` on the client machine whose status you wish to monitor (can also be the same RPI).
+6. Run ```ledload -s -l``` on the RPI to start it in LED server mode.
+7. Run ```ledload -c 192.168.0.100``` on the client machine where ```192.168.0.100``` is replaced with the IP address of the RPI (must be an IP address).
+
+You should now see load from the client machine displayed on the LED panel driven by the RPI. Note that the ```ledload``` program is built for my 56-core Xeon so you will not see the entire display lit up if you have fewer cores. It's left as an exercise to the reader to modify the program to meet your specific needs.
 
 ## buttoning it up
 
