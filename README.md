@@ -29,6 +29,7 @@ Materials:
 - [Raspberry Pi 4B](https://www.amazon.com/Raspberry-Pi-RPI4-MODBP-4GB-Model-4GB/dp/B09TTNF8BT)
 - [Raspberry Pi 15W USB-C power supply](https://www.amazon.com/Raspberry-Pi-USB-C-Power-Supply/dp/B07W8XHMJZ)
 - [two 40mm x 20mm 5V fans](https://www.amazon.com/dp/B072Q3CMRW)
+- [fan splitter cable](https://www.amazon.com/dp/B00KG8KCK4)
 - [USB-C panel mount extension cable](https://www.datapro.net/products/usb-c-panel-mount-extension-cable.html?search=usb-c+panel)
 - [RJ45 Ethernet panel mount extension cable](https://www.datapro.net/products/panel-mount-ethernet-rj45-cat5e-extension-cable.html?search=rj45+panel)
 - [Rack ears](https://www.amazon.com/dp/B0B6TM1LC1)
