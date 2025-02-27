@@ -22,6 +22,7 @@ Materials:
 - [solder](https://www.amazon.com/dp/B09LDHLM1F)
 - [24 AWG hook-up wire](https://www.amazon.com/dp/B076P54QW8)
 - [wires with female-female Dupont connectors](https://www.amazon.com/dp/B01EV70C78)
+- [male Dupont headers](https://www.amazon.com/dp/B07PKKY8BX)
 - [perf board](https://www.amazon.com/dp/B07ZYTZ48N)
 - [8x8 LED modules with MAX7219 microcontrollers](https://www.amazon.com/dp/B0BXDJS22V)
 - [two 74HC14 inverter ICs](https://www.amazon.com/dp/B0983ZXJFZ)
