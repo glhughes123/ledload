@@ -2,7 +2,7 @@
 
 ![picture of the ledload device](docs/ledload.jpeg)
 
-A load monitor using an array of thirteen 8x8 LED display modules.
+A 1U rack-mounted load monitor using an array of thirteen 8x8 LED display modules.
 
 This repository contains the source code, electronic schematics, and 3D models used to build and run this device.
 
