@@ -1,3 +1,4 @@
+#include <memory>
 #include <arpa/inet.h>
 #include <errno.h>
 #include <netinet/in.h>
@@ -16,8 +17,8 @@
 
 RemoteCpuLoadWriter::RemoteCpuLoadWriter(const char *pszaddr, int port)
 {
-    this->fdsock = socket(AF_INET, SOCK_DGRAM, 0);
-    if (this->fdsock < 0)
+    this->fdsock = unique_fd(socket(AF_INET, SOCK_DGRAM, 0));
+    if (this->fdsock == -1)
     {
         std::ostringstream message;
         message << "unable to open socket: (" << errno << ") " << strerror(errno);
@@ -30,22 +31,21 @@ RemoteCpuLoadWriter::RemoteCpuLoadWriter(const char *pszaddr, int port)
 
 RemoteCpuLoadWriter::~RemoteCpuLoadWriter()
 {
-    close(this->fdsock);
 }
 
 void RemoteCpuLoadWriter::WriteLoad(CpuLoad load)
 {
-    int cbbuffer = PACKET_HEADER_BYTES + load.ccpu;
-    uint8_t *pbuffer = (uint8_t *)calloc(cbbuffer, sizeof(uint8_t));
+    int cb = PACKET_HEADER_BYTES + load.ccpu;
+    uint8_t rgb[cb] = {0};
 
-    pbuffer[0] = GET_BYTE(load.time, 0);
-    pbuffer[1] = GET_BYTE(load.time, 1);
-    pbuffer[2] = GET_BYTE(load.time, 2);
-    pbuffer[3] = GET_BYTE(load.time, 3);
-    pbuffer[4] = (uint8_t)load.ccpu;
+    rgb[0] = GET_BYTE(load.time, 0);
+    rgb[1] = GET_BYTE(load.time, 1);
+    rgb[2] = GET_BYTE(load.time, 2);
+    rgb[3] = GET_BYTE(load.time, 3);
+    rgb[4] = (uint8_t)load.ccpu;
     for (int i = 0; i < load.ccpu; i++)
     {
-        pbuffer[PACKET_HEADER_BYTES + i] = (uint8_t)load.pcpu[i];
+        rgb[PACKET_HEADER_BYTES + i] = (uint8_t)load.pcpu[i];
     }
 
     struct sockaddr_in server;
@@ -54,13 +54,11 @@ void RemoteCpuLoadWriter::WriteLoad(CpuLoad load)
     server.sin_addr.s_addr = this->addr;
     server.sin_port = htons(this->port);
 
-    int result = sendto(this->fdsock, pbuffer, cbbuffer, 0, (struct sockaddr *)&server, sizeof(server));
+    int result = sendto(this->fdsock.get(), rgb, cb, 0, (struct sockaddr *)&server, sizeof(server));
     if (result < 0)
     {
         std::ostringstream message;
         message << "unable to open socket: (" << errno << ") " << strerror(errno);
         throw std::runtime_error(message.str());
     }
-
-    free(pbuffer);
 }

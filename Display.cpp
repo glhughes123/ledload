@@ -1,3 +1,4 @@
+#include <memory>
 #include <stdint.h>
 #include <stdlib.h>
 #include "Display.hpp"
@@ -6,10 +7,9 @@ Display::Display(int width, int height)
 {
     this->width = width;
     this->height = height;
-    this->pbuffer = (uint8_t *)calloc(width * height, sizeof(uint8_t));
+    this->pbuffer = std::unique_ptr<uint8_t[]>(new uint8_t[width * height]);
 }
 
 Display::~Display()
 {
-    free(this->pbuffer);
 }

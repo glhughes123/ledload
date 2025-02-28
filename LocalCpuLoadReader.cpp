@@ -8,6 +8,7 @@
 #include <time.h>
 #include <unistd.h>
 #include "CpuLoad.hpp"
+#include "unique_file_ptr.hpp"
 
 LocalCpuLoadReader::LocalCpuLoadReader()
 {
@@ -28,8 +29,7 @@ LocalCpuLoadReader::~LocalCpuLoadReader()
 
 CpuLoad LocalCpuLoadReader::ReadLoad()
 {
-    FILE *pf;
-    pf = fopen("/proc/stat", "r");
+    unique_file_ptr pf = unique_file_ptr(fopen("/proc/stat", "r"));
 
     char buf[256];
     char cpu[8];
@@ -46,11 +46,11 @@ CpuLoad LocalCpuLoadReader::ReadLoad()
 
     time_t t = time(NULL);
     CpuLoad cpuLoad = CpuLoad(t, this->ccpu);
-    if (fgets(buf, sizeof(buf), pf) != NULL)
+    if (fgets(buf, sizeof(buf), pf.get()) != NULL)
     {
         for (int ic = 0; ic < this->ccpu; ic++)
         {
-            if (fgets(buf, sizeof(buf), pf) == NULL)
+            if (fgets(buf, sizeof(buf), pf.get()) == NULL)
             {
                 break;
             }
@@ -76,6 +76,5 @@ CpuLoad LocalCpuLoadReader::ReadLoad()
             this->pbusys[ic] = total - idle;
         }
     }
-    fclose(pf);
     return cpuLoad;
 }

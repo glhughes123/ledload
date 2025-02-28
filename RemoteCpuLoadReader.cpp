@@ -12,8 +12,8 @@
 
 RemoteCpuLoadReader::RemoteCpuLoadReader(int port)
 {
-    this->fdsock = socket(AF_INET, SOCK_DGRAM, 0);
-    if (this->fdsock < 0)
+    this->fdsock = unique_fd(socket(AF_INET, SOCK_DGRAM, 0));
+    if (this->fdsock == -1)
     {
         std::ostringstream message;
         message << "unable to open socket: (" << errno << ") " << strerror(errno);
@@ -25,7 +25,7 @@ RemoteCpuLoadReader::RemoteCpuLoadReader(int port)
     server.sin_family = AF_INET;
     server.sin_addr.s_addr = INADDR_ANY;
     server.sin_port = htons(port);
-    if (bind(this->fdsock, (struct sockaddr *)&server, sizeof(server)) < 0)
+    if (bind(this->fdsock.get(), (struct sockaddr *)&server, sizeof(server)) < 0)
     {
         std::ostringstream message;
         message << "unable to bind to socket: (" << errno << ") " << strerror(errno);
@@ -35,16 +35,15 @@ RemoteCpuLoadReader::RemoteCpuLoadReader(int port)
 
 RemoteCpuLoadReader::~RemoteCpuLoadReader()
 {
-    close(this->fdsock);
 }
 
 CpuLoad RemoteCpuLoadReader::ReadLoad()
 {
-    uint8_t netbuffer[2048];
+    uint8_t rgb[2048];
 
     struct sockaddr_in client;
     uint cbclient = sizeof(client);
-    int status = recvfrom(this->fdsock, netbuffer, sizeof(netbuffer), 0, (struct sockaddr *)&client, &cbclient);
+    int status = recvfrom(this->fdsock.get(), rgb, sizeof(rgb), 0, (struct sockaddr *)&client, &cbclient);
     if (status < 0)
     {
         std::ostringstream message;
@@ -56,13 +55,13 @@ CpuLoad RemoteCpuLoadReader::ReadLoad()
         throw std::runtime_error("read invalid packet data");
     }
 
-    time_t t = netbuffer[0] | (netbuffer[1] << 8) | (netbuffer[2] << 16) | (netbuffer[3] << 24);
-    int ccpu = netbuffer[4];
+    time_t t = rgb[0] | (rgb[1] << 8) | (rgb[2] << 16) | (rgb[3] << 24);
+    int ccpu = rgb[4];
 
     CpuLoad load = CpuLoad(t, ccpu);
     for (int i = 0; i < ccpu; i++)
     {
-        load.pcpu[i] = netbuffer[PACKET_HEADER_BYTES + i];
+        load.pcpu[i] = rgb[PACKET_HEADER_BYTES + i];
     }
 
     return load;

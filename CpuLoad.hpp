@@ -1,5 +1,6 @@
 #include <arpa/inet.h>
 #include <time.h>
+#include "unique_fd.hpp"
 
 #define PACKET_HEADER_BYTES 5
 
@@ -39,7 +40,7 @@ public:
 
 class RemoteCpuLoadReader : public CpuLoadReader
 {
-    int fdsock;
+    unique_fd fdsock;
 
 public:
     RemoteCpuLoadReader(int port);
@@ -50,7 +51,7 @@ public:
 
 class RemoteCpuLoadWriter
 {
-    int fdsock;
+    unique_fd fdsock;
     in_addr_t addr;
     int port;
 

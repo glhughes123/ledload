@@ -1,11 +1,14 @@
+#include <memory>
 #include <stdint.h>
+#include "unique_fd.hpp"
+#include "unique_mmap_ptr.hpp"
 
 class Display
 {
 public:
     int width;
     int height;
-    uint8_t *pbuffer;
+    std::unique_ptr<uint8_t[]> pbuffer;
 
     Display(int width, int height);
     virtual ~Display();
@@ -32,9 +35,9 @@ struct LedSegment
 class LedDisplay : public Display
 {
     int csegments;
-    LedSegment *psegments;
-    int fdspi;
-    volatile void *pgpio;
+    std::unique_ptr<LedSegment[]> psegments;
+    unique_fd fdspi;
+    unique_mmap_ptr pgpio;
 
 public:
     LedDisplay(int segments, LedSegment *psegments);

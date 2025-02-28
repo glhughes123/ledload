@@ -2,6 +2,7 @@
 #include <fcntl.h>
 #include <linux/spi/spi.h>
 #include <linux/spi/spidev.h>
+#include <memory>
 #include <sstream>
 #include <stdexcept>
 #include <stdint.h>
@@ -23,28 +24,26 @@
 #define SEGMENT_WIDTH   8
 #define SEGMENT_HEIGHT  8
 
-// TODO: cleanup after partial failure
-
 LedDisplay::LedDisplay(int segments, LedSegment *psegments)
     : Display(segments * SEGMENT_WIDTH, SEGMENT_HEIGHT)
 {
     this->csegments = segments;
-    this->psegments = (LedSegment *)calloc(segments, sizeof(LedSegment));
+    this->psegments = std::unique_ptr<LedSegment[]>(new LedSegment[segments]);
     if (this->psegments == NULL)
     {
         throw std::runtime_error("could not allocate buffers");
     }
-    memcpy(this->psegments, psegments, segments * sizeof(LedSegment));
+    memcpy(this->psegments.get(), psegments, segments * sizeof(LedSegment));
 
-    int fdgpio = open("/dev/gpiomem", O_RDWR | O_SYNC);
-    if (fdgpio < 0)
+    unique_fd fdgpio = unique_fd(open("/dev/gpiomem", O_RDWR | O_SYNC));
+    if (fdgpio == -1)
     {
         std::ostringstream message;
         message << "unable to open /dev/gpiomem: (" << errno << ") " << strerror(errno);
         throw std::runtime_error(message.str());
     }
 
-    this->pgpio = mmap(NULL, GPIO_MEM_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fdgpio, GPIO_MEM_BASE);
+    this->pgpio = unique_mmap_ptr(mmap(NULL, GPIO_MEM_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fdgpio.get(), GPIO_MEM_BASE), GPIO_MEM_SIZE);
     if (this->pgpio == MAP_FAILED)
     {
         std::ostringstream message;
@@ -52,21 +51,18 @@ LedDisplay::LedDisplay(int segments, LedSegment *psegments)
         throw std::runtime_error(message.str());
     }
 
-    close(fdgpio);
-    fdgpio = -1;
-
-    gpio_set_func(this->pgpio, GPIO_PIN_MOSI, GPIO_FUNC_ALT0);
-    gpio_set_func(this->pgpio, GPIO_PIN_MISO, GPIO_FUNC_ALT0);
-    gpio_set_func(this->pgpio, GPIO_PIN_CLK, GPIO_FUNC_ALT0);
-    gpio_set_func(this->pgpio, GPIO_PIN_CE0, GPIO_FUNC_OUT);
-    gpio_set_func(this->pgpio, GPIO_PIN_CE1, GPIO_FUNC_OUT);
+    gpio_set_func(this->pgpio.get(), GPIO_PIN_MOSI, GPIO_FUNC_ALT0);
+    gpio_set_func(this->pgpio.get(), GPIO_PIN_MISO, GPIO_FUNC_ALT0);
+    gpio_set_func(this->pgpio.get(), GPIO_PIN_CLK, GPIO_FUNC_ALT0);
+    gpio_set_func(this->pgpio.get(), GPIO_PIN_CE0, GPIO_FUNC_OUT);
+    gpio_set_func(this->pgpio.get(), GPIO_PIN_CE1, GPIO_FUNC_OUT);
     for (int i = 0; i < this->csegments; i++)
     {
-        gpio_set_func(this->pgpio, this->psegments[i].cs_pin, GPIO_FUNC_OUT);
+        gpio_set_func(this->pgpio.get(), this->psegments[i].cs_pin, GPIO_FUNC_OUT);
     }
 
-    this->fdspi = open("/dev/spidev0.0", O_RDWR);
-    if (this->fdspi < 0)
+    this->fdspi = unique_fd(open("/dev/spidev0.0", O_RDWR));
+    if (this->fdspi == -1)
     {
         std::ostringstream message;
         message << "unable to open /dev/spidev0.0: (" << errno << ") " << strerror(errno);
@@ -76,12 +72,12 @@ LedDisplay::LedDisplay(int segments, LedSegment *psegments)
     uint32_t spi_mode = SPI_MODE_0;
     uint32_t spi_bpw = 8;
     uint32_t spi_hz = SPI_BAUD;
-    if (ioctl(this->fdspi, SPI_IOC_WR_MODE, &spi_mode) < 0 ||
-        ioctl(fdspi, SPI_IOC_RD_MODE, &spi_mode) < 0 ||
-        ioctl(fdspi, SPI_IOC_WR_BITS_PER_WORD, &spi_bpw) < 0 ||
-        ioctl(fdspi, SPI_IOC_RD_BITS_PER_WORD, &spi_bpw) < 0 ||
-        ioctl(fdspi, SPI_IOC_WR_MAX_SPEED_HZ, &spi_hz) < 0 ||
-        ioctl(fdspi, SPI_IOC_RD_MAX_SPEED_HZ, &spi_hz) < 0)
+    if (ioctl(this->fdspi.get(), SPI_IOC_WR_MODE, &spi_mode) < 0 ||
+        ioctl(this->fdspi.get(), SPI_IOC_RD_MODE, &spi_mode) < 0 ||
+        ioctl(this->fdspi.get(), SPI_IOC_WR_BITS_PER_WORD, &spi_bpw) < 0 ||
+        ioctl(this->fdspi.get(), SPI_IOC_RD_BITS_PER_WORD, &spi_bpw) < 0 ||
+        ioctl(this->fdspi.get(), SPI_IOC_WR_MAX_SPEED_HZ, &spi_hz) < 0 ||
+        ioctl(this->fdspi.get(), SPI_IOC_RD_MAX_SPEED_HZ, &spi_hz) < 0)
     {
         std::ostringstream message;
         message << "unable to configure /dev/spidev0.0: (" << errno << ") " << strerror(errno);
@@ -108,9 +104,6 @@ LedDisplay::LedDisplay(int segments, LedSegment *psegments)
 
 LedDisplay::~LedDisplay()
 {
-    munmap((void *)this->pgpio, GPIO_MEM_SIZE);
-    close(this->fdspi);
-    free(this->psegments);
 }
 
 void LedDisplay::WriteBuffer()
@@ -146,14 +139,14 @@ void LedDisplay::WriteBuffer()
             // write out the line buffer when we're at the end of the chain
             if (s == 0 || this->psegments[s - 1].cs_pin != last_cs_pin)
             {
-                gpio_reset(this->pgpio, last_cs_pin);
+                gpio_reset(this->pgpio.get(), last_cs_pin);
                 microsleep(SPI_CS_DELAY_US);
 
                 spitfer.len = (last_segment - s + 1) * 2 * sizeof(uint8_t);
-                ioctl(this->fdspi, SPI_IOC_MESSAGE(1), &spitfer);
+                ioctl(this->fdspi.get(), SPI_IOC_MESSAGE(1), &spitfer);
 
                 microsleep(SPI_CS_DELAY_US);
-                gpio_set(this->pgpio, last_cs_pin);
+                gpio_set(this->pgpio.get(), last_cs_pin);
 
                 last_cs_pin = this->psegments[s - 1].cs_pin;
                 last_segment = s - 1;
@@ -179,7 +172,7 @@ void LedDisplay::WriteToSegment(int segment, uint8_t address, uint8_t data)
     segment -= chain_start_segment;
 
     // disable chip select for the chain
-    gpio_reset(this->pgpio, chain_start_cs_pin);
+    gpio_reset(this->pgpio.get(), chain_start_cs_pin);
     microsleep(SPI_CS_DELAY_US);
 
     // set up the transfer buffer
@@ -198,9 +191,9 @@ void LedDisplay::WriteToSegment(int segment, uint8_t address, uint8_t data)
     spitfer.cs_change = 0;
 
     // transfer data
-    ioctl(this->fdspi, SPI_IOC_MESSAGE(1), &spitfer);
+    ioctl(this->fdspi.get(), SPI_IOC_MESSAGE(1), &spitfer);
 
     // enable chip select to load the data
     microsleep(SPI_CS_DELAY_US);
-    gpio_set(this->pgpio, chain_start_cs_pin);
+    gpio_set(this->pgpio.get(), chain_start_cs_pin);
 }
