@@ -15,9 +15,6 @@
 #include "gpio.h"
 #include "util.h"
 
-#define GPIO_MEM_BASE  0
-#define GPIO_MEM_SIZE  0x01800000
-
 #define SPI_BAUD         (1 * 1000 * 1000)
 #define SPI_CS_DELAY_US  10
 
@@ -29,10 +26,6 @@ led_display::led_display(int segments, led_segment *psegments)
 {
     this->csegments = segments;
     this->psegments = std::unique_ptr<led_segment[]>(new led_segment[segments]);
-    if (this->psegments == NULL)
-    {
-        throw std::runtime_error("could not allocate buffers");
-    }
     memcpy(this->psegments.get(), psegments, segments * sizeof(led_segment));
 
     unique_fd fdgpio = unique_fd(open("/dev/gpiomem", O_RDWR | O_SYNC));

@@ -1,4 +1,5 @@
 #include <arpa/inet.h>
+#include <memory>
 #include <time.h>
 #include "unique_fd.hpp"
 
@@ -12,7 +13,7 @@ class cpu_load
 public:
     time_t time;
     int ccpu;
-    int *pcpu;
+    std::unique_ptr<int[]> pcpu;
 
     cpu_load(cpu_load &load);
     cpu_load(time_t time, int ccpu);
@@ -31,8 +32,8 @@ public:
 class local_cpu_load_reader : public cpu_load_reader
 {
     int ccpu;
-    long *ptotals;
-    long *pbusys;
+    std::unique_ptr<long[]> ptotals;
+    std::unique_ptr<long[]> pbusys;
 
 public:
     local_cpu_load_reader();

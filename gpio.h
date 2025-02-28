@@ -1,5 +1,8 @@
 #include <stdint.h>
 
+#define GPIO_MEM_BASE  0
+#define GPIO_MEM_SIZE  0x01800000
+
 #define GPIO_SETFUNC_OFFSET 0x00
 #define GPIO_SET_OFFSET     0x1C
 #define GPIO_RESET_OFFSET   0x28

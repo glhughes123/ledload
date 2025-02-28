@@ -1,3 +1,4 @@
+#include <memory>
 #include <errno.h>
 #include <stdexcept>
 #include <stdio.h>
@@ -13,18 +14,12 @@
 local_cpu_load_reader::local_cpu_load_reader()
 {
     this->ccpu = get_nprocs();
-    this->ptotals = (long *)calloc(this->ccpu, sizeof(long));
-    this->pbusys = (long *)calloc(this->ccpu, sizeof(long));
-    if (this->ptotals == NULL || this->pbusys == NULL)
-    {
-        throw std::runtime_error("could not allocate buffers");
-    }
+    this->ptotals = std::unique_ptr<long[]>(new long[this->ccpu]());
+    this->pbusys = std::unique_ptr<long[]>(new long[this->ccpu]());
 }
 
 local_cpu_load_reader::~local_cpu_load_reader()
 {
-    free(this->ptotals);
-    free(this->pbusys);
 }
 
 cpu_load local_cpu_load_reader::read_load()
