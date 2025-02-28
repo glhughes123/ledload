@@ -1,21 +1,20 @@
-#include <memory>
 #include <arpa/inet.h>
 #include <errno.h>
+#include <memory>
 #include <netinet/in.h>
 #include <stdexcept>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sstream>
 #include <string.h>
-#include <errno.h>
 #include <sys/socket.h>
 #include <time.h>
 #include <unistd.h>
-#include "CpuLoad.hpp"
+#include "cpu_load.hpp"
 
 #define GET_BYTE(x, n) (((size_t)(x) >> (n * 8)) & 0xFF)
 
-RemoteCpuLoadWriter::RemoteCpuLoadWriter(const char *pszaddr, int port)
+remote_cpu_load_writer::remote_cpu_load_writer(const char *pszaddr, int port)
 {
     this->fdsock = unique_fd(socket(AF_INET, SOCK_DGRAM, 0));
     if (this->fdsock == -1)
@@ -29,11 +28,11 @@ RemoteCpuLoadWriter::RemoteCpuLoadWriter(const char *pszaddr, int port)
     this->port = port;
 }
 
-RemoteCpuLoadWriter::~RemoteCpuLoadWriter()
+remote_cpu_load_writer::~remote_cpu_load_writer()
 {
 }
 
-void RemoteCpuLoadWriter::WriteLoad(CpuLoad load)
+void remote_cpu_load_writer::write_load(cpu_load load)
 {
     int cb = PACKET_HEADER_BYTES + load.ccpu;
     uint8_t rgb[cb] = {0};

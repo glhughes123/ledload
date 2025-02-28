@@ -7,10 +7,10 @@
 #include <sys/sysinfo.h>
 #include <time.h>
 #include <unistd.h>
-#include "CpuLoad.hpp"
+#include "cpu_load.hpp"
 #include "unique_file_ptr.hpp"
 
-LocalCpuLoadReader::LocalCpuLoadReader()
+local_cpu_load_reader::local_cpu_load_reader()
 {
     this->ccpu = get_nprocs();
     this->ptotals = (long *)calloc(this->ccpu, sizeof(long));
@@ -21,13 +21,13 @@ LocalCpuLoadReader::LocalCpuLoadReader()
     }
 }
 
-LocalCpuLoadReader::~LocalCpuLoadReader()
+local_cpu_load_reader::~local_cpu_load_reader()
 {
     free(this->ptotals);
     free(this->pbusys);
 }
 
-CpuLoad LocalCpuLoadReader::ReadLoad()
+cpu_load local_cpu_load_reader::read_load()
 {
     unique_file_ptr pf = unique_file_ptr(fopen("/proc/stat", "r"));
 
@@ -45,7 +45,7 @@ CpuLoad LocalCpuLoadReader::ReadLoad()
     long guestNice;
 
     time_t t = time(NULL);
-    CpuLoad cpuLoad = CpuLoad(t, this->ccpu);
+    cpu_load cpuLoad = cpu_load(t, this->ccpu);
     if (fgets(buf, sizeof(buf), pf.get()) != NULL)
     {
         for (int ic = 0; ic < this->ccpu; ic++)

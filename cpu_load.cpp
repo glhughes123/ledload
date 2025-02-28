@@ -2,9 +2,9 @@
 #include <stdexcept>
 #include <sstream>
 #include <string.h>
-#include "CpuLoad.hpp"
+#include "cpu_load.hpp"
 
-CpuLoad::CpuLoad(CpuLoad &load)
+cpu_load::cpu_load(cpu_load &load)
 {
     this->time = load.time;
     this->ccpu = load.ccpu;
@@ -16,7 +16,7 @@ CpuLoad::CpuLoad(CpuLoad &load)
     memcpy(this->pcpu, load.pcpu, this->ccpu * sizeof(int));
 }
 
-CpuLoad::CpuLoad(time_t time, int ccpu)
+cpu_load::cpu_load(time_t time, int ccpu)
 {
     this->time = time;
     this->ccpu = ccpu;
@@ -27,7 +27,7 @@ CpuLoad::CpuLoad(time_t time, int ccpu)
     }
 }
 
-CpuLoad::~CpuLoad()
+cpu_load::~cpu_load()
 {
     free(this->pcpu);
 }

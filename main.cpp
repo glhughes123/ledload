@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "CpuLoad.hpp"
+#include "cpu_load.hpp"
 #include "digits.h"
-#include "Display.hpp"
+#include "display.hpp"
 #include "gpio.h"
 #include "util.h"
 
@@ -30,11 +30,11 @@ enum display_kind
     dk_led
 };
 
-void display_test_random(CpuLoadReader *preader, RemoteCpuLoadWriter *pwriter, Display *pdisplay, int delay);
-void display_test_ants(CpuLoadReader *preader, RemoteCpuLoadWriter *pwriter, Display *pdisplay, int delay);
-void display_test_digits(CpuLoadReader *preader, RemoteCpuLoadWriter *pwriter, Display *pdisplay, int delay);
+void display_test_random(cpu_load_reader *preader, remote_cpu_load_writer *pwriter, display *pdisplay, int delay);
+void display_test_ants(cpu_load_reader *preader, remote_cpu_load_writer *pwriter, display *pdisplay, int delay);
+void display_test_digits(cpu_load_reader *preader, remote_cpu_load_writer *pwriter, display *pdisplay, int delay);
 
-void display_load(CpuLoadReader *preader, RemoteCpuLoadWriter *pwriter, Display *pdisplay, int delay);
+void display_load(cpu_load_reader *preader, remote_cpu_load_writer *pwriter, display *pdisplay, int delay);
 
 int main(int argc, char **argv)
 {
@@ -42,7 +42,7 @@ int main(int argc, char **argv)
     display_kind dk_display = dk_console;
     char *pszserver = NULL;
     int port = DEFAULT_PORT;
-    void (*pfn_display)(CpuLoadReader *preader, RemoteCpuLoadWriter *pwriter, Display *pdisplay, int delay) = display_load;
+    void (*pfn_display)(cpu_load_reader *preader, remote_cpu_load_writer *pwriter, display *pdisplay, int delay) = display_load;
     for (int i = 1; i < argc; i++)
     {
         if (strcmp("-s", argv[i]) == 0)
@@ -100,35 +100,35 @@ int main(int argc, char **argv)
     }
 
     int delay = UPDATE_DELAY_US;
-    CpuLoadReader *preader = NULL;
+    cpu_load_reader *preader = NULL;
     if (local)
     {
-        preader = new LocalCpuLoadReader();
+        preader = new local_cpu_load_reader();
     }
     else
     {
         delay = 0; // NOTE: timing driven off of remote end
-        preader = new RemoteCpuLoadReader(port);
+        preader = new remote_cpu_load_reader(port);
     }
 
-    RemoteCpuLoadWriter *pwriter = NULL;
+    remote_cpu_load_writer *pwriter = NULL;
     if (pszserver != NULL)
     {
-        pwriter = new RemoteCpuLoadWriter(pszserver, port);
+        pwriter = new remote_cpu_load_writer(pszserver, port);
     }
 
-    Display *pdisplay = NULL;
+    display *pdisplay = NULL;
     if (dk_display == dk_console)
     {
-        pdisplay = new ConsoleDisplay(13 * 8, 8);
+        pdisplay = new console_display(13 * 8, 8);
     }
     else if (dk_display == dk_led)
     {
-        LedSegment rgsegments[13];
+        led_segment rgsegments[13];
         for (int i = 0; i < 5; i++) { rgsegments[i].cs_pin = GPIO_PIN_25; }
         for (int i = 5; i < 9; i++) { rgsegments[i].cs_pin = GPIO_PIN_24; }
         for (int i = 9; i < 13; i++) { rgsegments[i].cs_pin = GPIO_PIN_23; }
-        pdisplay = new LedDisplay(13, rgsegments);
+        pdisplay = new led_display(13, rgsegments);
     }
 
     srand(time(NULL));
@@ -142,7 +142,7 @@ int main(int argc, char **argv)
     return 0;
 }
 
-void display_test_random(CpuLoadReader *preader, RemoteCpuLoadWriter *pwriter, Display *pdisplay, int delay)
+void display_test_random(cpu_load_reader *preader, remote_cpu_load_writer *pwriter, display *pdisplay, int delay)
 {
     srand(0); // NOTE: for stable sequence
     while (true)
@@ -154,11 +154,11 @@ void display_test_random(CpuLoadReader *preader, RemoteCpuLoadWriter *pwriter, D
                 pdisplay->pbuffer[y * pdisplay->width + x] = rand() % 2;
             }
         }
-        pdisplay->WriteBuffer();
+        pdisplay->write_buffer();
     }
 }
 
-void display_test_ants(CpuLoadReader *preader, RemoteCpuLoadWriter *pwriter, Display *pdisplay, int delay)
+void display_test_ants(cpu_load_reader *preader, remote_cpu_load_writer *pwriter, display *pdisplay, int delay)
 {
     while (true)
     {
@@ -170,11 +170,11 @@ void display_test_ants(CpuLoadReader *preader, RemoteCpuLoadWriter *pwriter, Dis
                 pdisplay->pbuffer[y * pdisplay->width + x] = (t + y + x) % 2;
             }
         }
-        pdisplay->WriteBuffer();
+        pdisplay->write_buffer();
     }
 }
 
-void display_test_digits(CpuLoadReader *preader, RemoteCpuLoadWriter *pwriter, Display *pdisplay, int delay)
+void display_test_digits(cpu_load_reader *preader, remote_cpu_load_writer *pwriter, display *pdisplay, int delay)
 {
     while (true)
     {
@@ -187,11 +187,11 @@ void display_test_digits(CpuLoadReader *preader, RemoteCpuLoadWriter *pwriter, D
                 pdisplay->pbuffer[y * pdisplay->width + x] = (digits[(s + t) % 16][y % DIGIT_HEIGHT][x % DIGIT_WIDTH] == '*');
             }
         }
-        pdisplay->WriteBuffer();
+        pdisplay->write_buffer();
     }
 }
 
-void display_load(CpuLoadReader *preader, RemoteCpuLoadWriter *pwriter, Display *pdisplay, int delay)
+void display_load(cpu_load_reader *preader, remote_cpu_load_writer *pwriter, display *pdisplay, int delay)
 {
     int lupd[NUM_CPUS];
     int dcpu[NUM_CPUS];
@@ -210,11 +210,11 @@ void display_load(CpuLoadReader *preader, RemoteCpuLoadWriter *pwriter, Display 
     int init = true;
     while (true)
     {
-        CpuLoad load = preader->ReadLoad();
+        cpu_load load = preader->read_load();
 
         if (pwriter != NULL)
         {
-            pwriter->WriteLoad(load);
+            pwriter->write_load(load);
         }
 
         if (pdisplay != NULL)
@@ -300,7 +300,7 @@ void display_load(CpuLoadReader *preader, RemoteCpuLoadWriter *pwriter, Display 
                 }
             }
 
-            pdisplay->WriteBuffer();
+            pdisplay->write_buffer();
         }
 
         microsleep(delay);

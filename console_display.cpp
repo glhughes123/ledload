@@ -1,19 +1,19 @@
 #include <stdio.h>
-#include "Display.hpp"
+#include "display.hpp"
 
 #define ESC 27
 
-ConsoleDisplay::ConsoleDisplay(int width, int height)
-    : Display(width, height)
+console_display::console_display(int width, int height)
+    : display(width, height)
 {
     this->cleared = false;
 }
 
-ConsoleDisplay::~ConsoleDisplay()
+console_display::~console_display()
 {
 }
 
-void ConsoleDisplay::WriteBuffer()
+void console_display::write_buffer()
 {
     if (!this->cleared)
     {

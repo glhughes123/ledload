@@ -8,9 +8,9 @@
 #include <sys/socket.h>
 #include <time.h>
 #include <unistd.h>
-#include "CpuLoad.hpp"
+#include "cpu_load.hpp"
 
-RemoteCpuLoadReader::RemoteCpuLoadReader(int port)
+remote_cpu_load_reader::remote_cpu_load_reader(int port)
 {
     this->fdsock = unique_fd(socket(AF_INET, SOCK_DGRAM, 0));
     if (this->fdsock == -1)
@@ -33,11 +33,11 @@ RemoteCpuLoadReader::RemoteCpuLoadReader(int port)
     }
 }
 
-RemoteCpuLoadReader::~RemoteCpuLoadReader()
+remote_cpu_load_reader::~remote_cpu_load_reader()
 {
 }
 
-CpuLoad RemoteCpuLoadReader::ReadLoad()
+cpu_load remote_cpu_load_reader::read_load()
 {
     uint8_t rgb[2048];
 
@@ -58,7 +58,7 @@ CpuLoad RemoteCpuLoadReader::ReadLoad()
     time_t t = rgb[0] | (rgb[1] << 8) | (rgb[2] << 16) | (rgb[3] << 24);
     int ccpu = rgb[4];
 
-    CpuLoad load = CpuLoad(t, ccpu);
+    cpu_load load = cpu_load(t, ccpu);
     for (int i = 0; i < ccpu; i++)
     {
         load.pcpu[i] = rgb[PACKET_HEADER_BYTES + i];

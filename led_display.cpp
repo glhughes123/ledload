@@ -11,7 +11,7 @@
 #include <sys/ioctl.h>
 #include <sys/mman.h>
 #include <unistd.h>
-#include "Display.hpp"
+#include "display.hpp"
 #include "gpio.h"
 #include "util.h"
 
@@ -24,16 +24,16 @@
 #define SEGMENT_WIDTH   8
 #define SEGMENT_HEIGHT  8
 
-LedDisplay::LedDisplay(int segments, LedSegment *psegments)
-    : Display(segments * SEGMENT_WIDTH, SEGMENT_HEIGHT)
+led_display::led_display(int segments, led_segment *psegments)
+    : display(segments * SEGMENT_WIDTH, SEGMENT_HEIGHT)
 {
     this->csegments = segments;
-    this->psegments = std::unique_ptr<LedSegment[]>(new LedSegment[segments]);
+    this->psegments = std::unique_ptr<led_segment[]>(new led_segment[segments]);
     if (this->psegments == NULL)
     {
         throw std::runtime_error("could not allocate buffers");
     }
-    memcpy(this->psegments.get(), psegments, segments * sizeof(LedSegment));
+    memcpy(this->psegments.get(), psegments, segments * sizeof(led_segment));
 
     unique_fd fdgpio = unique_fd(open("/dev/gpiomem", O_RDWR | O_SYNC));
     if (fdgpio == -1)
@@ -87,26 +87,26 @@ LedDisplay::LedDisplay(int segments, LedSegment *psegments)
     // initalize display
     for (int i = 0; i < this->csegments; i++)
     {
-        this->WriteToSegment(i, 0x09, 0x00);
-        this->WriteToSegment(i, 0x0a, 0x00); // brightness; 0-7
-        this->WriteToSegment(i, 0x0b, 0x07);
-        this->WriteToSegment(i, 0x0c, 0x01);
-        this->WriteToSegment(i, 0x0f, 0x00); // test (1 = all on)
+        this->write_to_segment(i, 0x09, 0x00);
+        this->write_to_segment(i, 0x0a, 0x00); // brightness; 0-7
+        this->write_to_segment(i, 0x0b, 0x07);
+        this->write_to_segment(i, 0x0c, 0x01);
+        this->write_to_segment(i, 0x0f, 0x00); // test (1 = all on)
     }
     for (int i = 0; i < this->csegments; i++)
     {
         for (int y = 1; y <= SEGMENT_HEIGHT; y++)
         {
-            this->WriteToSegment(i, y, 0);
+            this->write_to_segment(i, y, 0);
         }
     }
 }
 
-LedDisplay::~LedDisplay()
+led_display::~led_display()
 {
 }
 
-void LedDisplay::WriteBuffer()
+void led_display::write_buffer()
 {
     uint8_t rgbtx[this->csegments * 2];
 
@@ -155,7 +155,7 @@ void LedDisplay::WriteBuffer()
     }
 }
 
-void LedDisplay::WriteToSegment(int segment, uint8_t address, uint8_t data)
+void led_display::write_to_segment(int segment, uint8_t address, uint8_t data)
 {
     // figure out the chain we're writing to
     int chain_start_cs_pin = this->psegments[segment].cs_pin;
