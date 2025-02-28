@@ -1,3 +1,4 @@
+#include <memory>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -100,27 +101,27 @@ int main(int argc, char **argv)
     }
 
     int delay = UPDATE_DELAY_US;
-    cpu_load_reader *preader = NULL;
+    std::unique_ptr<cpu_load_reader> preader = nullptr;
     if (local)
     {
-        preader = new local_cpu_load_reader();
+        preader = std::unique_ptr<cpu_load_reader>(new local_cpu_load_reader());
     }
     else
     {
         delay = 0; // NOTE: timing driven off of remote end
-        preader = new remote_cpu_load_reader(port);
+        preader = std::unique_ptr<cpu_load_reader>(new remote_cpu_load_reader(port));
     }
 
-    remote_cpu_load_writer *pwriter = NULL;
+    std::unique_ptr<remote_cpu_load_writer> pwriter = nullptr;
     if (pszserver != NULL)
     {
-        pwriter = new remote_cpu_load_writer(pszserver, port);
+        pwriter = std::unique_ptr<remote_cpu_load_writer>(new remote_cpu_load_writer(pszserver, port));
     }
 
-    display *pdisplay = NULL;
+    std::unique_ptr<display> pdisplay = nullptr;
     if (dk_display == dk_console)
     {
-        pdisplay = new console_display(13 * 8, 8);
+        pdisplay = std::unique_ptr<display>(new console_display(13 * 8, 8));
     }
     else if (dk_display == dk_led)
     {
@@ -128,16 +129,12 @@ int main(int argc, char **argv)
         for (int i = 0; i < 5; i++) { rgsegments[i].cs_pin = GPIO_PIN_25; }
         for (int i = 5; i < 9; i++) { rgsegments[i].cs_pin = GPIO_PIN_24; }
         for (int i = 9; i < 13; i++) { rgsegments[i].cs_pin = GPIO_PIN_23; }
-        pdisplay = new led_display(13, rgsegments);
+        pdisplay = std::unique_ptr<display>(new led_display(13, rgsegments));
     }
 
     srand(time(NULL));
 
-    (*pfn_display)(preader, pwriter, pdisplay, delay);
-
-    delete preader;
-    delete pwriter;
-    delete pdisplay;
+    (*pfn_display)(preader.get(), pwriter.get(), pdisplay.get(), delay);
 
     return 0;
 }
