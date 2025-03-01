@@ -41,7 +41,7 @@ Materials:
 
 The [models](https://github.com/glhughes123/ledload/tree/main/models) directory contains all of the designs and models for the enclosure parts and LED alinment jig.
 
-All of these parts were printed with default slicer settings using Bambu Lab matte black PLA-HF unless otherwise specified in the notes below.
+All of these parts were printed with default slicer settings in Bambu Studio, 0.20mm layer height, on a Bambu Lab P1S with the standard 0.4mm nozzle unless otherwise specified in the notes below. Material used is Bambu Lab Matte Charcoal PLA-HF (11101).
 
 ### FreeCAD projects
 
