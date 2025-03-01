@@ -52,12 +52,16 @@ All of these parts were printed with default slicer settings using Bambu Lab mat
 
 ### 3mf files
 
+#### led alignment plate
+
 | File | Description | Image |
 | ---- | ----------- | ----- |
 | [led alignment plate-6 leds w_ notches and edge.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20alignment%20plate-6%20leds%20w_%20notches%20and%20edge.3mf) | 6-module half of the LED alignment jig (1) | ![6 slot jig half](https://github.com/glhughes123/ledload/blob/main/docs/6%20slot%20jig.png) |
 | [led alignment plate-7 leds w_ notches and edge.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20alignment%20plate-7%20leds%20w_%20notches%20and%20edge.3mf) | 7-module half of the LED alignment jig (1) | ![7 slot jig half](https://github.com/glhughes123/ledload/blob/main/docs/7%20slot%20jig.png) |
 
 (1) print flat side down with separate support material (for socket recesses)
+
+#### led rack mount
 
 | File | Description | Printing notes |
 | ---- | ----------- | -------------- |
