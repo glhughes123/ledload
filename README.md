@@ -63,8 +63,8 @@ All of these parts were printed with default slicer settings in Bambu Studio, 0.
 
 #### led rack mount
 
-| File | Description | Printing notes |
-| ---- | ----------- | -------------- |
+| File | Description | Image |
+| ---- | ----------- | ----- |
 | [led rack mount-panel 001 bottom with pins.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20rack%20mount-panel%20001%20bottom%20with%20pins.3mf) | Bottom-right panel[^1] | ![bottom-right panel](https://github.com/glhughes123/ledload/blob/main/docs/panel%20001%20bottom.png) |
 | [led rack mount-panel 001 top with pins.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20rack%20mount-panel%20001%20top%20with%20pins.3mf) | Top-left panel [^1] | ![top-left panel](https://github.com/glhughes123/ledload/blob/main/docs/panel%20001%20top.png) |
 | [led rack mount-panel 002 bottom with pins.3mf](https://github.com/glhughes123/ledload/blob/main/models/led%20rack%20mount-panel%20002%20bottom%20with%20pins.3mf) | Bottom-left panel[^1] | ![bottom-left panel](https://github.com/glhughes123/ledload/blob/main/docs/panel%20002%20bottom.png) |
