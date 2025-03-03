@@ -32,10 +32,10 @@ Materials:
 - [fan splitter cable](https://www.amazon.com/dp/B00KG8KCK4)
 - [USB-C panel mount extension cable](https://www.datapro.net/products/usb-c-panel-mount-extension-cable.html?search=usb-c+panel)
 - [RJ45 Ethernet panel mount extension cable](https://www.datapro.net/products/panel-mount-ethernet-rj45-cat5e-extension-cable.html?search=rj45+panel)
-- [Rack ears](https://www.amazon.com/dp/B0B6TM1LC1)
+- [Cisco CK-300RM-19-compatible rack ears](https://www.amazon.com/dp/B09Y5V7HKN)
 - [M3 socket head screws and nuts](https://www.amazon.com/dp/B0CXX8K2WT)
-- [M4 button head screws](https://www.amazon.com/dp/B0CTH4DWW2) and [nuts](https://www.amazon.com/dp/B0CNSY7637)
-- [light dimming sheets](https://www.amazon.com/dp/B006R0VWSG)
+- [M4 countersuck  socket head screws and nuts](https://www.amazon.com/dp/B0CNSY7637)
+- [light blocking tape](https://www.amazon.com/dp/B0CDH9Y5J4)
 
 ## models
 
@@ -102,10 +102,10 @@ Required parts:
 - M3 nuts
 - M4 screws for rack ears
 - M4 nuts
-- [Rack ears](https://www.amazon.com/dp/B0B6TM1LC1)
-- [two 40mm x 20mm 5V fans](https://www.amazon.com/dp/B072Q3CMRW)
-- [USB-C panel mount extension cable](https://www.datapro.net/products/usb-c-panel-mount-extension-cable.html?search=usb-c+panel)
-- [RJ45 Ethernet panel mount extension cable](https://www.datapro.net/products/panel-mount-ethernet-rj45-cat5e-extension-cable.html?search=rj45+panel)
+- Cisco CK-300RM-19-compatible rack ears
+- two 40mm x 20mm 5V fans
+- USB-C panel mount extension cable
+- RJ45 Ethernet panel mount extension cable
 
 Instructions:
 1. Glue the two back panels together with superglue. You can also use the backplate joiner for additional stiffness.
@@ -122,7 +122,7 @@ Instructions:
 ## building strings of LED modules
 
 Required parts:
-- [8x8 LED modules with MAX7219 microcontrollers](https://www.amazon.com/dp/B0BXDJS22V)
+- 8x8 LED modules with MAX7219 microcontrollers
 - 24 AWG solid-core wire
 - 5-pin Dupont male headers
 
@@ -136,7 +136,7 @@ Instructions:
 
 Required parts:
 - two 74HC14 inverter ICs
-- [Perf board](https://www.amazon.com/dp/B07ZYTZ48N)
+- Perf board
 - 24 AWG solid-core wire
 - 5-pin and 2-pin Dupont male headers
 
@@ -145,10 +145,14 @@ Instructions:
 
 ## inserting LED modules into the alignment jig
 
+Required parts:
+- light dimming tape (optional)
+
 Instructions:
 1. Organize the LED displays into a string of 13 that align well together. There is some variance in how the LED displays are cut and taking some time here will help the device to look more uniform in the end.
 2. Insert the LED displays into the alignment jig. Be careful with aligning the pins; do not force them into the holes. Note the tabs on the top of the LED displays align with notches on one side of the jig.
 3. Very carefully, attach the strings of circuit boards to the pins of the LED displays on the other side of the alignment jig. This is a very fiddly process so take your time and be careful not to bend the pins as they are fragile. The string of 5 should be on the left and all input pins should be oriented on the left of each string of circuit boards.
+4. (optional) Attach the light dimming tape to the front of the LED modules and frame and trim excess.
 
 ## final assembly
 
@@ -158,7 +162,6 @@ Required parts:
 - M3 nuts
 - Rasbperry Pi 4B
 - Wires with female Dupont connectors on both ends
-- [light dimming sheets](https://www.amazon.com/dp/B006R0VWSG) (optional)
 
 Instructions:
 1. Place the alignment jig with the attached LED modules into the front bezel.
@@ -185,8 +188,6 @@ Instructions:
    - GND pin 9 to pin 1 of the fan cable
 10. Plug in the USB-C and RJ45 Ethernet cables.
 11. Place M3 nuts in the slots for the top holes in the side panels and the pegs in the middle of the case. Use superglue to secure them in place as there will otherwise be nothing preventing them from turning when screwing the top panel in place.
-12. Optionally, cut light dimming sheets to size and apply to front.
-    - These sheets stick to the LED panels via static cling and are very easy to dislodge, e.g. when assembling or cleaning. I am probably going to replace it with some kind of [light dimming tape](https://www.amazon.com/dp/B0CDH9Y5J4) in the future.
 
 ## testing
 
