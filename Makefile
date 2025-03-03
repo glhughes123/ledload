@@ -1,4 +1,4 @@
-HEADERS = gpio.h util.h unique_fd.hpp display.hpp cpu_load.hpp unique_fd.hpp unique_file_ptr.hpp unique_mmap_ptr.hpp
+HEADERS = gpio.h util.h unique_fd.hpp display.hpp cpu_load.hpp unique_addrinfo_ptr.hpp unique_fd.hpp unique_file_ptr.hpp unique_mmap_ptr.hpp
 SOURCES = main.cpp \
     gpio.c util.c \
     display.cpp console_display.cpp led_display.cpp \
