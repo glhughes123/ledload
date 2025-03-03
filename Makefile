@@ -7,7 +7,7 @@ SOURCES = main.cpp \
 default: ledload
 
 ledload: $(SOURCES) $(HEADERS)
-	c++ -o ledload $(SOURCES)
+	c++ -O2 -o ledload $(SOURCES)
 
 clean:
 	rm -f ledload
