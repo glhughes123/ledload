@@ -205,7 +205,7 @@ If everything is working well at this point you can set up the client to send lo
 
 5. Build / install ```ledload``` on the client machine whose status you wish to monitor (can also be the same RPI).
 6. Run ```ledload -s -l``` on the RPI to start it in LED server mode.
-7. Run ```ledload -c 192.168.0.100``` on the client machine where ```192.168.0.100``` is replaced with the IP address of the RPI (must be an IP address).
+7. Run ```ledload -c 192.168.0.100``` on the client machine where ```192.168.0.100``` is replaced with the hostname or IP address of the RPI.
 
 You should now see load from the client machine displayed on the LED panel driven by the RPI. Note that the ```ledload``` program is built for my 56-core Xeon so you will not see the entire display lit up if you have fewer cores. It's left as an exercise to the reader to modify the program to meet your specific needs.
 
